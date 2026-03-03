@@ -1,5 +1,6 @@
 function setup() {
-  createCanvas(1000, 1000);
+  // Use the full window size so the canvas fills the browser viewport
+  createCanvas(windowWidth, windowHeight);
   background(100);
 }
 
@@ -28,4 +29,10 @@ function clearCanvas() {
   setTimeout(() => {
     background(100);
   }, 500);
+}
+
+// Keep the canvas sized to the window when the user resizes the browser
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  background(100);
 }
