@@ -1,7 +1,31 @@
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(1000, 1000);
+  background(100);
 }
 
 function draw() {
-  background(220);
+  circle(mouseX, mouseY, 20);
+}
+
+// Press 'r', 'Escape', 'Backspace' or 'Delete' to clear the canvas
+function keyPressed() {
+  // Accept uppercase or lowercase 'R'
+  if (key === 'r' || key === 'R' || keyCode === ESCAPE || keyCode === BACKSPACE || keyCode === DELETE) {
+    clearCanvas();
+  }
+}
+
+function clearCanvas() {
+  background(100);
+  // Small visual feedback: flash text then disappear
+  push();
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  text('Canvas cleared', width / 2, height / 2);
+  pop();
+  // Remove the message after a short delay by redrawing background
+  setTimeout(() => {
+    background(100);
+  }, 500);
 }
