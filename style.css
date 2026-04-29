@@ -1,8 +1,105 @@
 html, body {
   margin: 0;
   padding: 0;
+  background: #0a0a0a;
 }
 
 canvas {
   display: block;
+}
+
+#perfume-ui {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  padding: 0.55rem 1.15rem 0.6rem;
+  min-width: min(88vw, 16rem);
+  border-radius: 999px;
+  background: rgba(12, 12, 14, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  color: rgba(255, 255, 255, 0.92);
+  pointer-events: auto;
+}
+
+.scent-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.45rem;
+  padding-bottom: 0.02rem;
+}
+
+.scent-picker__opt {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.scent-picker__opt input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.scent-picker__label {
+  display: inline-block;
+  padding: 0.28rem 0.62rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.scent-picker__opt:hover .scent-picker__label {
+  opacity: 0.72;
+}
+
+.scent-picker__opt input:checked + .scent-picker__label {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.scent-picker__opt input:focus-visible + .scent-picker__label {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.scent-picker__opt input:not(:checked):focus-visible + .scent-picker__label {
+  opacity: 0.85;
+}
+
+.perfume-ui__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0 0.15rem;
+}
+
+.perfume-ui__title {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.perfume-ui__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
