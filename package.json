@@ -1,27 +1,18 @@
 {
   "name": "augmented-face",
   "version": "1.0.0",
-  "description": "",
-  "main": "sketch.js",
+  "description": "Webcam face-tracking sketch with animated particle aura. Pure static site (p5.js + MediaPipe via CDN).",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx --yes serve -l 5173 ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ayymer/Augmented-Face.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Ayymer/Augmented-Face/issues"
   },
   "homepage": "https://ayymer.github.io/Augmented-Face/",
-  "dependencies": {
-    "vite": "^7.3.1"
-  }
+  "license": "ISC"
 }
