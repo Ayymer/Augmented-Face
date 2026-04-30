@@ -21,6 +21,17 @@ const SCENT_CONFIG = {
       "Assets/alima/alima-flowerv2.png",
     ],
   },
+  aymeric: {
+    displayName: "Aymeric",
+    emitFromFullTemplatePool: false,
+    auraAssetScale: 1,
+    /** Placeholder: same assets as Alima until dedicated Aymeric art exists */
+    templatePaths: [
+      ...ALIMA_STILLS,
+      "Assets/alima/alima-perfume.png",
+      "Assets/alima/alima-flowerv2.png",
+    ],
+  },
   jamie: {
     displayName: "Jamie",
     emitFromFullTemplatePool: true,
@@ -54,6 +65,7 @@ const SCENT_CONFIG = {
 
 const SCENT_ORDER = /** @type {const} */ ([
   "alima",
+  "aymeric",
   "jamie",
   "paloma",
 ]);
@@ -968,8 +980,6 @@ function applyScent(scentKey) {
   if (!imgs?.length || !imgs[0]?.width) return;
   activeScentKey = scentKey;
   flowers = makeFlowersFromTemplates(imgs, scentKey);
-  const nameEl = document.querySelector(".perfume-ui__name");
-  if (nameEl) nameEl.textContent = SCENT_CONFIG[scentKey].displayName;
   syncScentRadios(scentKey);
   console.log(
     `[${SCENT_CONFIG[scentKey].displayName}] ${flowers.length} emitters · floating image puffs + sparse dots`,

@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/Ayymer/Augmented-Face/issues"
   },
-  "homepage": "https://github.com/Ayymer/Augmented-Face#readme",
+  "homepage": "https://ayymer.github.io/Augmented-Face/",
   "dependencies": {
     "vite": "^7.3.1"
   }

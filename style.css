@@ -85,9 +85,8 @@ canvas {
 
 .perfume-ui__header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: baseline;
-  gap: 1rem;
   padding: 0 0.15rem;
 }
 
@@ -96,10 +95,4 @@ canvas {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.55;
-}
-
-.perfume-ui__name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
 }
