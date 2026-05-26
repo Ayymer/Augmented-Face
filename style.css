@@ -25,6 +25,7 @@ canvas {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
   color: rgba(255, 255, 255, 0.92);
   pointer-events: auto;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .scent-picker {
@@ -86,7 +87,8 @@ canvas {
 .perfume-ui__header {
   display: flex;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
+  gap: 0.65rem;
   padding: 0 0.15rem;
 }
 
@@ -95,4 +97,186 @@ canvas {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.55;
+}
+
+.oracle-reload {
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: inherit;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.oracle-reload:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.oracle-reload:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.oracle-reload--hidden {
+  display: none;
+}
+
+#perfume-ui.perfume-ui--hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.scent-oracle {
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  z-index: 50;
+  padding: 1rem 1.5rem 1.1rem;
+  min-width: min(88vw, 14rem);
+  border-radius: 1rem;
+  background: rgba(12, 12, 14, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.scent-oracle--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.scent-oracle--fading {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+.scent-oracle--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.scent-oracle__waiting {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  animation: oracleWaitingPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes oracleWaitingPulse {
+  0%, 100% { opacity: 0.38; }
+  50% { opacity: 0.72; }
+}
+
+.scent-oracle__loading {
+  display: none;
+}
+
+.scent-oracle__reveal {
+  display: none;
+}
+
+.scent-oracle--waiting .scent-oracle__waiting {
+  display: block;
+}
+
+.scent-oracle--waiting .scent-oracle__loading,
+.scent-oracle--waiting .scent-oracle__reveal {
+  display: none;
+}
+
+.scent-oracle--loading .scent-oracle__waiting,
+.scent-oracle--loading .scent-oracle__reveal {
+  display: none;
+}
+
+.scent-oracle--loading .scent-oracle__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.scent-oracle--revealing .scent-oracle__waiting,
+.scent-oracle--revealing .scent-oracle__loading {
+  display: none;
+}
+
+.scent-oracle--revealing .scent-oracle__reveal {
+  display: block;
+}
+
+.scent-oracle__spinner {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  animation: oracleSpin 0.85s linear infinite;
+}
+
+@keyframes oracleSpin {
+  to { transform: rotate(360deg); }
+}
+
+.scent-oracle__loading-text {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.scent-oracle__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  animation: oracleRevealIn 0.55s ease both;
+}
+
+.scent-oracle__name {
+  margin: 0 0 0.4rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  animation: oracleRevealIn 0.55s ease 0.08s both;
+}
+
+.scent-oracle__tagline {
+  margin: 0;
+  font-size: 0.78rem;
+  opacity: 0.72;
+  letter-spacing: 0.02em;
+  animation: oracleRevealIn 0.55s ease 0.2s both;
+}
+
+@keyframes oracleRevealIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

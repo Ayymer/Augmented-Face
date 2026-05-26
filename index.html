@@ -8,9 +8,33 @@
     <script src="./libraries/p5.min.js"></script>
   </head>
   <body>
-    <div id="perfume-ui" aria-label="Scent visualization">
+    <div
+      id="scent-oracle"
+      class="scent-oracle scent-oracle--visible scent-oracle--waiting"
+      aria-live="polite"
+    >
+      <p class="scent-oracle__waiting">Position your face</p>
+      <div class="scent-oracle__loading">
+        <span class="scent-oracle__spinner" aria-hidden="true"></span>
+        <p class="scent-oracle__loading-text">Reading your aura…</p>
+      </div>
+      <div class="scent-oracle__reveal">
+        <p class="scent-oracle__eyebrow">Your aura</p>
+        <p class="scent-oracle__name"></p>
+        <p class="scent-oracle__tagline"></p>
+      </div>
+    </div>
+    <div id="perfume-ui" class="perfume-ui--hidden" aria-label="Scent visualization">
       <div class="perfume-ui__header">
         <span class="perfume-ui__title">Scent</span>
+        <button
+          type="button"
+          id="oracle-reload"
+          class="oracle-reload oracle-reload--hidden"
+          aria-label="Draw a new scent"
+        >
+          ↻ New aura
+        </button>
       </div>
       <div
         id="scent-picker"
@@ -19,7 +43,7 @@
         aria-label="Choose scent profile"
       >
         <label class="scent-picker__opt">
-          <input type="radio" name="scent" value="alima" checked />
+          <input type="radio" name="scent" value="alima" />
           <span class="scent-picker__label">Alima</span>
         </label>
         <label class="scent-picker__opt">

@@ -12,6 +12,7 @@ const ALIMA_STILLS = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map(
 const SCENT_CONFIG = {
   alima: {
     displayName: "Alima",
+    tagline: "Soft floral drift",
     emitFromFullTemplatePool: false,
     /** Visual factor on aura pops + halo dots vs baseline (Jamie/Paloma assets render smaller than Alima). */
     auraAssetScale: 1,
@@ -23,6 +24,7 @@ const SCENT_CONFIG = {
   },
   aymeric: {
     displayName: "Aymeric",
+    tagline: "Luminous, airy",
     emitFromFullTemplatePool: false,
     auraAssetScale: 1,
     /** Placeholder: same assets as Alima until dedicated Aymeric art exists */
@@ -34,6 +36,7 @@ const SCENT_CONFIG = {
   },
   jamie: {
     displayName: "Jamie",
+    tagline: "Salt, citrus, shell-light",
     emitFromFullTemplatePool: true,
     auraAssetScale: 1 / 1.5,
     templatePaths: [
@@ -50,6 +53,7 @@ const SCENT_CONFIG = {
   },
   paloma: {
     displayName: "Paloma",
+    tagline: "Warm sun, tropical lift",
     /** Each anchor draws randomly from the full set on every spawn (not one image lock per point). */
     emitFromFullTemplatePool: true,
     auraAssetScale: 1 / 1.5,
@@ -962,7 +966,132 @@ let lastFaceW = 220;
 let lastFaceH = 280;
 
 const loadedImagesByScent = {};
-let activeScentKey = "alima";
+let activeScentKey = null;
+
+const ORACLE_LOADING_MS = 900;
+const ORACLE_REVEAL_MS = 3000;
+const ORACLE_FADE_MS = 600;
+
+/** @type {"waiting" | "loading" | "revealing" | "done"} */
+let oraclePhase = "waiting";
+let oracleRevealStartMs = 0;
+let pendingOracleScentKey = null;
+
+function pickRandomScentKey() {
+  const i = (Math.random() * SCENT_ORDER.length) | 0;
+  return SCENT_ORDER[i];
+}
+
+function clearScentRadios() {
+  const nodes = document.querySelectorAll('input[name="scent"]');
+  nodes.forEach((el) => {
+    if (!(el instanceof HTMLInputElement)) return;
+    el.checked = false;
+    el.setAttribute("aria-checked", "false");
+  });
+}
+
+function setOracleUiVisibility(phase) {
+  const oracle = document.getElementById("scent-oracle");
+  const picker = document.getElementById("perfume-ui");
+  const reloadBtn = document.getElementById("oracle-reload");
+  if (!oracle) return;
+
+  oracle.hidden = phase === "done";
+  oracle.classList.remove(
+    "scent-oracle--hidden",
+    "scent-oracle--visible",
+    "scent-oracle--fading",
+    "scent-oracle--waiting",
+    "scent-oracle--loading",
+    "scent-oracle--revealing",
+  );
+
+  if (phase === "waiting") {
+    oracle.classList.add("scent-oracle--visible", "scent-oracle--waiting");
+  } else if (phase === "loading") {
+    oracle.classList.add("scent-oracle--visible", "scent-oracle--loading");
+  } else if (phase === "revealing") {
+    oracle.classList.add("scent-oracle--visible", "scent-oracle--revealing");
+  } else {
+    oracle.classList.add("scent-oracle--hidden");
+  }
+
+  picker?.classList.toggle("perfume-ui--hidden", phase !== "done");
+  reloadBtn?.classList.toggle("oracle-reload--hidden", phase !== "done");
+}
+
+function startOracleLoading(scentKey) {
+  pendingOracleScentKey = scentKey;
+  oraclePhase = "loading";
+  oracleRevealStartMs = performance.now();
+  document.getElementById("scent-oracle")?.classList.remove("scent-oracle--fading");
+  setOracleUiVisibility("loading");
+}
+
+function updateOracleLoading(nowMs) {
+  if (oraclePhase !== "loading" || !pendingOracleScentKey) return;
+
+  const elapsed = nowMs - oracleRevealStartMs;
+  if (elapsed >= ORACLE_LOADING_MS) {
+    const key = pendingOracleScentKey;
+    pendingOracleScentKey = null;
+    beginOracleReveal(key);
+  }
+}
+
+function beginOracleReveal(scentKey) {
+  applyScent(scentKey);
+  oraclePhase = "revealing";
+  oracleRevealStartMs = performance.now();
+
+  const cfg = SCENT_CONFIG[scentKey];
+  const nameEl = document.querySelector(".scent-oracle__name");
+  const taglineEl = document.querySelector(".scent-oracle__tagline");
+  if (nameEl) nameEl.textContent = cfg?.displayName ?? scentKey;
+  if (taglineEl) taglineEl.textContent = cfg?.tagline ?? "";
+
+  document.getElementById("scent-oracle")?.classList.remove("scent-oracle--fading");
+  setOracleUiVisibility("revealing");
+}
+
+function updateOracleReveal(nowMs) {
+  if (oraclePhase !== "revealing") return;
+
+  const elapsed = nowMs - oracleRevealStartMs;
+  const oracle = document.getElementById("scent-oracle");
+
+  if (elapsed >= ORACLE_REVEAL_MS && oracle && !oracle.classList.contains("scent-oracle--fading")) {
+    oracle.classList.add("scent-oracle--fading");
+  }
+
+  if (elapsed >= ORACLE_REVEAL_MS + ORACLE_FADE_MS) {
+    oraclePhase = "done";
+    setOracleUiVisibility("done");
+  }
+}
+
+function resetOracleSession(hasFace) {
+  flowers = [];
+  activeScentKey = null;
+  popPuffs = [];
+  popDots = [];
+  prevHeadPopDir = null;
+  explosionPushDirX = 0;
+  explosionPushDirY = 0;
+  explosionPushFrames = 0;
+  pendingOracleScentKey = null;
+  clearScentRadios();
+
+  document.getElementById("scent-oracle")?.classList.remove("scent-oracle--fading");
+
+  if (hasFace) {
+    startOracleLoading(pickRandomScentKey());
+  } else {
+    oraclePhase = "waiting";
+    setOracleUiVisibility("waiting");
+  }
+}
 
 function syncScentRadios(scentKey) {
   const nodes = document.querySelectorAll('input[name="scent"]');
@@ -1006,14 +1135,21 @@ const sketch = (p) => {
     webcam.size(640, 480);
     webcam.hide();
 
-    applyScent("alima");
+    setOracleUiVisibility("waiting");
 
     const picker = document.getElementById("scent-picker");
     picker?.addEventListener("change", (e) => {
+      if (oraclePhase !== "done") return;
       const t = e.target;
       if (t instanceof HTMLInputElement && t.name === "scent" && t.checked) {
         applyScent(t.value);
       }
+    });
+
+    document.getElementById("oracle-reload")?.addEventListener("click", () => {
+      if (oraclePhase === "loading" || oraclePhase === "revealing") return;
+      const hasFace = !!faceResults?.faceLandmarks?.length;
+      resetOracleSession(hasFace);
     });
 
     const vision = await FilesetResolver.forVisionTasks(
@@ -1050,7 +1186,14 @@ const sketch = (p) => {
       }
     }
 
+    updateOracleLoading(now);
+    updateOracleReveal(now);
+
     if (faceResults?.faceLandmarks?.length) {
+      if (oraclePhase === "waiting") {
+        startOracleLoading(pickRandomScentKey());
+      }
+
       const landmarks = faceResults.faceLandmarks[0];
 
       let minY = Infinity,
@@ -1119,7 +1262,7 @@ const sketch = (p) => {
         faceH,
         faceR: Math.max(faceW, faceH) * BODY_REPEL_RADIUS_FRAC,
         facePresent: true,
-        auraAssetScale: SCENT_CONFIG[activeScentKey].auraAssetScale ?? 1,
+        auraAssetScale: SCENT_CONFIG[activeScentKey]?.auraAssetScale ?? 1,
       };
 
       const headDir = classifyHeadPopDir(landmarks, faceW, faceH, p);
@@ -1161,7 +1304,7 @@ const sketch = (p) => {
       faceH: lastFaceH,
       faceR: Math.max(lastFaceW, lastFaceH) * BODY_REPEL_RADIUS_FRAC,
       facePresent: false,
-      auraAssetScale: SCENT_CONFIG[activeScentKey].auraAssetScale ?? 1,
+      auraAssetScale: SCENT_CONFIG[activeScentKey]?.auraAssetScale ?? 1,
     };
     applyExplosionPushAuraOnFlowers();
     for (const f of flowers) {
