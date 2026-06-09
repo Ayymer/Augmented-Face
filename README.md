@@ -7,16 +7,18 @@ Augmented Face is a browser-based webcam demo that tracks the user's face and dr
 ## Features
 
 - Live webcam input in the browser.
-- Face tracking with MediaPipe Face Landmarker.
-- Animated particle aura around the jaw and lower face.
-- Head-tilt burst interaction.
-- Scent selector UI with visual themes for Alima, Aymeric, Jamie, and Paloma.
+- Face and hand tracking with MediaPipe Face and Hand Landmarkers.
+- Animated particle aura around the jaw and lower face (radial burst from chin, then each asset drifts in its own random direction after 1–3s).
+- Unique aura physics per scent load (size, speed, opacity, fade, dot screen-edge bounce, face collision styles); image puffs drift off-screen.
+- Hand wind: swipe an open palm through the aura to disperse perfume particles.
+- Close-release burst on the hand (make a fist, then open for a spray punch).
+- Scent oracle reveal plus manual scent picker for Alima, Aymeric, Jamie, and Paloma.
 
 ## Stack
 
 - Plain HTML, CSS, and JavaScript.
 - p5.js for canvas drawing and webcam capture.
-- MediaPipe Tasks Vision loaded from CDN for face landmark detection.
+- MediaPipe Tasks Vision loaded from CDN for face and hand landmark detection.
 - GitHub Pages deployment from the `main` branch root.
 
 No build step is required. The project is served as a static site.
@@ -43,7 +45,12 @@ Image assets live in `Assets/` and are grouped by scent:
 
 - `Assets/alima/` - Alima flowers, perfume bottle, and still elements.
 - `Assets/jamie/` - shells, glass, orange, leaves, and perfume bottle.
+- `Assets/aymeric/` - autumn maple leaf (Maison Margiela Aymeric).
 - `Assets/paloma/` - sun, leaves, mango, and perfume bottle.
+
+**Presentation / slides:** [docs/PROJECT_PRESENTATION.md](docs/PROJECT_PRESENTATION.md) — full project overview, features, user journey, and parameter summaries for colleagues.
+
+Technical parameter reference: [docs/AURA_PARAMETERS.md](docs/AURA_PARAMETERS.md) (export to PDF from your editor or browser).
 
 The p5 library files used by the static page live in `libraries/`.
 
