@@ -102,12 +102,12 @@ const SHARD_LIFE_MIN = 26;
 const SHARD_LIFE_MAX = 50;
 const SHARD_SPEED_MUL = 2.4;
 
-// ── Opacity: fade-in → solid plateau → fade-out
+// ── Opacity: fade-in → solid plateau → fade-out (higher fadeOut = longer tail on screen)
 const PUFF_FADE_IN_FRAC = 0.11;
-const PUFF_FADE_OUT_FRAC = 0.16;
+const PUFF_FADE_OUT_FRAC = 0.28;
 const PUFF_SOLID_BOOST = 1.12;
 const DOT_FADE_IN_FRAC = 0.1;
-const DOT_FADE_OUT_FRAC = 0.15;
+const DOT_FADE_OUT_FRAC = 0.26;
 const DOT_SOLID_BOOST = 1.1;
 
 // ── Emitter timing / caps (lower cap = better FPS)
@@ -129,8 +129,8 @@ const PUFF_SCALE_MIN_FRAC = 0.135;
 const PUFF_SCALE_MAX_FRAC = 0.235;
 const PUFF_ALPHA_BASE_MIN = 0.62;
 const PUFF_ALPHA_BASE_MAX = 0.92;
-const PUFF_LIFE_MIN = 280;
-const PUFF_LIFE_MAX = 480;
+const PUFF_LIFE_MIN = 340;
+const PUFF_LIFE_MAX = 580;
 const PUFF_DRAG = 0.989;
 const PUFF_TURBULENCE = 0.042;
 const PUFF_ROT_DAMP = 0.99;
@@ -320,22 +320,22 @@ function rollAuraProfile(scentKey) {
   return {
     seed: (Math.random() * 1e9) | 0,
     scentKey,
-    assetScaleMul: randRange(0.88, 1.22),
-    initSpeedMul: randRange(0.82, 1.28),
-    radialForceMul: randRange(0.85, 1.25),
-    drag: randRange(0.982, 0.993),
-    turbulence: randRange(0.028, 0.055),
-    alphaMin: randRange(0.52, 0.72),
-    alphaMax: randRange(0.78, 0.95),
-    solidBoost: randRange(1.05, 1.18),
-    lifeMul: randRange(0.75, 1.35),
-    fadeInFrac: randRange(0.08, 0.14),
-    fadeOutFrac: randRange(0.12, 0.22),
-    dotFadeInFrac: randRange(0.08, 0.13),
-    dotFadeOutFrac: randRange(0.11, 0.18),
-    dotSolidBoost: randRange(1.04, 1.16),
-    spawnIntervalMul: randRange(0.72, 1.38),
-    dotEmitMul: randRange(0.65, 1.45),
+    assetScaleMul: randRange(0.72, 1.38),
+    initSpeedMul: randRange(0.62, 1.48),
+    radialForceMul: randRange(0.68, 1.42),
+    drag: randRange(0.976, 0.996),
+    turbulence: randRange(0.016, 0.072),
+    alphaMin: randRange(0.45, 0.78),
+    alphaMax: randRange(0.72, 0.98),
+    solidBoost: randRange(1.02, 1.24),
+    lifeMul: randRange(0.95, 1.75),
+    fadeInFrac: randRange(0.06, 0.16),
+    fadeOutFrac: randRange(0.26, 0.48),
+    dotFadeInFrac: randRange(0.06, 0.15),
+    dotFadeOutFrac: randRange(0.22, 0.42),
+    dotSolidBoost: randRange(1.0, 1.22),
+    spawnIntervalMul: randRange(0.52, 1.62),
+    dotEmitMul: randRange(0.48, 1.82),
     screenEdge: pickOne(SCREEN_EDGE_STYLES),
     faceCollision,
     repelMul:
@@ -349,7 +349,7 @@ function rollAuraProfile(scentKey) {
         ? randRange(1.45, 1.85)
         : faceCollision === "shatter"
           ? randRange(1.1, 1.35)
-          : randRange(0.25, 0.55),
+          : randRange(0.12, 0.48),
     shatterChance:
       faceCollision === "shatter"
         ? randRange(0.55, 0.85)

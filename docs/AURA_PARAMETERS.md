@@ -44,18 +44,19 @@ Rolled once when a scent is applied (oracle reveal, picker, or “New aura”). 
 | Parameter | Range (typical) | Effect |
 |-----------|-----------------|--------|
 | **seed** | integer | Reproducible ID for debugging; not shown to users. |
-| **assetScaleMul** | 0.88 – 1.22 | Overall size of image puffs for this session. |
-| **initSpeedMul** | 0.82 – 1.28 | Initial outward speed from face / burst. |
-| **radialForceMul** | 0.85 – 1.25 | Continuous push away from face center. |
-| **drag** | 0.982 – 0.993 | Friction (higher = slower, heavier drift). |
-| **turbulence** | 0.028 – 0.055 | Random jitter each frame (more = busier, less smooth). |
-| **alphaMin / alphaMax** | 0.52–0.72 / 0.78–0.95 | Opacity range of particles. |
-| **solidBoost** | 1.05 – 1.18 | Peak brightness during mid-life. |
-| **lifeMul** | 0.75 – 1.35 | How long puffs live (higher = longer on screen). |
-| **fadeInFrac** | 0.08 – 0.14 | Fraction of life spent fading in (image puffs). |
-| **fadeOutFrac** | 0.12 – 0.22 | Fraction of life spent fading out. |
-| **spawnIntervalMul** | 0.72 – 1.38 | Spawn rate (lower = denser aura). |
-| **dotEmitMul** | 0.65 – 1.45 | How often colored dots appear with each puff. |
+| **assetScaleMul** | 0.72 – 1.38 | Overall size of image puffs for this session. |
+| **initSpeedMul** | 0.62 – 1.48 | Initial outward speed from face / burst. |
+| **radialForceMul** | 0.68 – 1.42 | Continuous push away from face center. |
+| **drag** | 0.976 – 0.996 | Friction (higher = slower, heavier drift). |
+| **turbulence** | 0.016 – 0.072 | Random jitter each frame (more = busier, less smooth). |
+| **alphaMin / alphaMax** | 0.45–0.78 / 0.72–0.98 | Opacity range of particles. |
+| **solidBoost** | 1.02 – 1.24 | Peak brightness during mid-life. |
+| **lifeMul** | 0.95 – 1.75 | How long puffs live (higher = longer on screen). |
+| **fadeInFrac** | 0.06 – 0.16 | Fraction of life spent fading in (image puffs). |
+| **fadeOutFrac** | 0.26 – 0.48 | Fraction of life spent fading out (longer tail). |
+| **dotFadeOutFrac** | 0.22 – 0.42 | Dot fade-out tail (same idea as puffs). |
+| **spawnIntervalMul** | 0.52 – 1.62 | Spawn rate (lower = denser aura). |
+| **dotEmitMul** | 0.48 – 1.82 | How often colored dots appear with each puff. |
 | **screenEdge** | see below | **Dots/shards only** — image puffs pass through edges. |
 | **faceCollision** | soft / firm / shatter | How particles interact with the face zone. |
 
@@ -131,8 +132,8 @@ Prevents motifs from stacking in one spot without violent bouncing.
 | Constant | Meaning |
 |----------|---------|
 | `PUFF_SCALE_MIN/MAX_FRAC` | Size range vs face width. |
-| `PUFF_LIFE_MIN/MAX` | Lifetime in frames. |
-| `PUFF_FADE_IN/OUT_FRAC` | Fade curve shape. |
+| `PUFF_LIFE_MIN/MAX` | Lifetime in frames (340–580 baseline). |
+| `PUFF_FADE_IN/OUT_FRAC` | Fade curve shape (default out ≈ 0.28 = long linger). |
 
 ### Dots (color specks)
 
