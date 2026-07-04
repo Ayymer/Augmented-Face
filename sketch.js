@@ -12,7 +12,7 @@ const ALIMA_STILLS = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map(
 
 const SCENT_CONFIG = {
   alima: {
-    displayName: "Alima",
+    displayName: "Flower market",
     tagline: "Soft floral drift",
     emitFromFullTemplatePool: false,
     /** Visual factor on aura pops + halo dots vs baseline (Jamie/Paloma assets render smaller than Alima). */
@@ -24,14 +24,14 @@ const SCENT_CONFIG = {
     ],
   },
   aymeric: {
-    displayName: "Aymeric",
+    displayName: "Springtime in a Park",
     tagline: "Autumn leaf — Maison Margiela",
     emitFromFullTemplatePool: true,
     auraAssetScale: 1,
     templatePaths: ["Assets/aymeric/aymeric-leaf-autumn.png"],
   },
   jamie: {
-    displayName: "Jamie",
+    displayName: "Never ending sunset",
     tagline: "Salt, citrus, shell-light",
     emitFromFullTemplatePool: true,
     auraAssetScale: 1 / 1.5,
@@ -48,7 +48,7 @@ const SCENT_CONFIG = {
     ],
   },
   paloma: {
-    displayName: "Paloma",
+    displayName: "Chasing sunset",
     tagline: "Warm sun, tropical lift",
     /** Each anchor draws randomly from the full set on every spawn (not one image lock per point). */
     emitFromFullTemplatePool: true,
@@ -2013,6 +2013,18 @@ function clearScentRadios() {
   });
 }
 
+function syncScentPickerLabels() {
+  const picker = document.getElementById("scent-picker");
+  if (!picker) return;
+  for (const scentKey of SCENT_ORDER) {
+    const input = picker.querySelector(`input[value="${scentKey}"]`);
+    const label = input?.nextElementSibling;
+    if (label instanceof HTMLElement) {
+      label.textContent = SCENT_CONFIG[scentKey].displayName;
+    }
+  }
+}
+
 function setOracleUiVisibility(phase) {
   const oracle = document.getElementById("scent-oracle");
   const picker = document.getElementById("perfume-ui");
@@ -2201,6 +2213,7 @@ const sketch = (p) => {
     webcam.hide();
 
     setOracleUiVisibility("waiting");
+    syncScentPickerLabels();
 
     const picker = document.getElementById("scent-picker");
     picker?.addEventListener("change", (e) => {
