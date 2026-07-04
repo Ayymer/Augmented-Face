@@ -1,6 +1,6 @@
 # Augmented Face
 
-Augmented Face is a browser-based webcam demo that tracks the user's face and draws animated scent-inspired particles around the jawline. It was built as an interactive visual prototype for showcasing different perfume identities.
+Maison margiela REPLICA ar folder is a browser-based webcam demo that tracks the user's face and draws animated scent-inspired particles around the jawline. It was built as an interactive visual prototype for showcasing different perfume identities.
 
 **Try it:** https://ayymer.github.io/Augmented-Face/ (allow camera when the browser asks).
 
